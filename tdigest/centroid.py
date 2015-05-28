@@ -19,4 +19,4 @@ class Centroid(object):
         return abs(self.mean - x)
 
     def __repr__(self):
-        return "Centroid{centroid=%.1f, count=%d}" % (self.mean, self.count)
+        return "Centroid{mean=%.1f, count=%d}" % (self.mean, self.count)
