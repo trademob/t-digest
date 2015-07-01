@@ -6,7 +6,6 @@ from random import random
 from sure import expect
 from time import time
 
-sys.path.append('../')
 from tdigest.merge_digest import MergeDigest
 
 
@@ -60,7 +59,7 @@ class TestMergeDigest(unittest.TestCase):
     def test_serialization(self):
         for i in range(3):
             self.md.add(i, 1)
-        expect(self.md.serialize()).to.be.equal('[[0.0, 1.0], [1, 1], [2, 1]]')
+        expect(self.md.serialize()).to.be.equal('[[0, 1], [1, 1], [2, 1]]')
 
     def test_values_uniform(self):
         """
