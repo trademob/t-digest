@@ -21,7 +21,7 @@ class TestMergeDigest(unittest.TestCase):
                 n2 += 1
         return (n1 + n2) / 2.0 / len(data)
 
-    def stub_distribution_test(self, values):
+    def _stub_distribution_test(self, values):
         start = time()
         for value in values:
             self.md.add(value, 1)
@@ -67,7 +67,7 @@ class TestMergeDigest(unittest.TestCase):
         """
         print TestMergeDigest.test_values_uniform.__doc__
         values = [random() for _ in range(self.datapoints)]
-        self.stub_distribution_test(values)
+        self._stub_distribution_test(values)
 
     def test_values_standard_normal(self):
         """
@@ -75,7 +75,7 @@ class TestMergeDigest(unittest.TestCase):
         """
         print TestMergeDigest.test_values_standard_normal.__doc__
         values = [np.random.normal() for _ in range(self.datapoints)]
-        self.stub_distribution_test(values)
+        self._stub_distribution_test(values)
 
     def test_values_gamma(self):
         """
@@ -83,7 +83,7 @@ class TestMergeDigest(unittest.TestCase):
         """
         print TestMergeDigest.test_values_gamma.__doc__
         values = [np.random.gamma(0.1, 10) for _ in range(self.datapoints)]
-        self.stub_distribution_test(values)
+        self._stub_distribution_test(values)
 
     def test_values_narrow_normal(self):
         """
@@ -97,7 +97,7 @@ class TestMergeDigest(unittest.TestCase):
                 values.append(criteria)
             else:
                 values.append(np.random.normal())
-        self.stub_distribution_test(values)
+        self._stub_distribution_test(values)
 
     def test_values_sequence_asc(self):
         """
@@ -110,7 +110,7 @@ class TestMergeDigest(unittest.TestCase):
         for _ in range(self.datapoints):
             c += step
             values.append(c)
-        self.stub_distribution_test(values)
+        self._stub_distribution_test(values)
 
     def test_values_sequence_desc(self):
         """
@@ -123,4 +123,4 @@ class TestMergeDigest(unittest.TestCase):
         for _ in range(self.datapoints):
             c -= step
             values.append(c)
-        self.stub_distribution_test(values)
+        self._stub_distribution_test(values)

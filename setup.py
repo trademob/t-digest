@@ -22,7 +22,9 @@ setup(
     tests_require=[
         'sure',
         'numpy',
+        'nose',
         ],
+    test_suite='nose.collector',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Programming Language :: Python',

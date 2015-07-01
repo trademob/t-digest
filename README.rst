@@ -9,7 +9,9 @@ The algorithm was first introduced by Ted Dunning. Further information can be fo
 Installation
 ------------
 
-*pip install git+https://github.com/trademob/t-digest.git*
+.. code-block:: bash
+
+    $ pip install git+https://github.com/trademob/t-digest.git
 
 
 Usage

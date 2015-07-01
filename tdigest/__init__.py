@@ -5,5 +5,5 @@ from .tdigest import TDigest
 
 
 __author__ = 'Trademob'
-__version__ = '0.0.1-dev'
+__version__ = '0.0.2.dev0'
 __licence__ = 'MIT'
