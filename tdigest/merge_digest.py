@@ -14,7 +14,7 @@ class MergeDigest(object):
         # temporary buffer for incoming data points
         self.temp_elements = []
         # working buffer during merging
-        self.merge_elements = [(0.0, 0.0)]
+        self.merge_elements = []
         # "final" centroid list
         self.elements = []
 
@@ -44,13 +44,6 @@ class MergeDigest(object):
             # no weight to merge
             return None
 
-        # get number of centroids
-        n = 0
-        if self.total_weight > 0:
-            n = len(self.elements)
-            if self.elements[-1][1] > 0:
-                n += 1
-
         # combine new "temp" elements with existing centroids and sort list
         self.temp_elements.extend(self.elements)
         self.temp_elements = sorted(
@@ -67,23 +60,22 @@ class MergeDigest(object):
         self.temp_elements = []
         self.unmerged_weight = 0
         self.elements = self.merge_elements
-        # reset merge_elements for initial centroid in new merge run
-        self.merge_elements = [(0, 0)]
+        self.merge_elements = []
 
         # get min/max of distribution
         if self.total_weight > 0:
             self.min = min(self.min, self.elements[0][0])
-            if self.elements[-1][1] > 0:
-                self.max = max(self.max, self.elements[-1][0])
-            else:
-                self.max = max(self.max, self.elements[-2][0])
+            self.max = max(self.max, self.elements[-1][0])
 
     def merge_centroid(self, w_so_far, k1, centroid):
         k2 = self.integrated_location(float(w_so_far) / self.total_weight)
         (mean, weight) = centroid
+        if len(self.merge_elements) == 0:
+            self.merge_elements.append((mean, weight))
+            return k1
         (mean_before, weight_before) = self.merge_elements[-1]
 
-        if ((k2 - k1 <= 1) or (weight_before == 0)):
+        if (k2 - k1 <= 1):
             # merge into existing centroid
             weight_after = weight_before + weight
             mean_after = mean_before + (mean - mean_before) * float(weight) / weight_after
@@ -108,10 +100,6 @@ class MergeDigest(object):
         elif n == 1:
             return self.elements[0][0]
 
-        # get #centroids
-        if self.elements[-1][1] > 0:
-            n += 1
-
         index = q * self.total_weight
 
         right = self.min
@@ -119,7 +107,7 @@ class MergeDigest(object):
         b_count = self.elements[0][1]
         weight_so_far = 0
 
-        for i in range(1, n - 1):
+        for i in range(1, n):
             a = b
             a_count = b_count
             left = right
@@ -147,13 +135,11 @@ class MergeDigest(object):
         self.merge_new_values()
 
         n = len(self.elements)
+
         if n == 0:
-            # handle case for zero or one centroids
-            return None
-        elif n == 1 and self.elements[0][0]:
             return None
         elif n == 1:
-            if x > self.min:
+            if x < self.min:
                 return 0
             elif x > self.max:
                 return 1
@@ -163,13 +149,6 @@ class MergeDigest(object):
                 return (float(x - self.min) / (self.max - self.min))
         else:
             # handle case for 2+ centroids
-            if self.elements[n - 1] > 0:
-                n += 1
-            if x < self.min:
-                return 0
-            if x >= self.max:
-                return 1
-
             r = 0
             a = self.min
             b = self.min
@@ -210,5 +189,5 @@ class MergeDigest(object):
 
     def serialize(self):
         self.merge_new_values()
-        centroids = [(c[0], c[1]) for c in self.elements if c[1]]
+        centroids = [(c[0], c[1]) for c in self.elements]
         return json.dumps(centroids)
