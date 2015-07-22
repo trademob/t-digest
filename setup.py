@@ -19,7 +19,12 @@ setup(
     license=tdigest.__licence__,
     packages=find_packages(),
     install_requires=[],
-    tests_require=[],
+    tests_require=[
+        'sure',
+        'numpy',
+        'nose',
+        ],
+    test_suite='nose.collector',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Programming Language :: Python',
