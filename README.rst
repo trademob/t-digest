@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/trademob/t-digest.svg?branch=master
+    :target: https://travis-ci.org/trademob/t-digest
+
 Python implementation of t-digest algorithm
 ==========================================
 
